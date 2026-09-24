@@ -41,12 +41,15 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.androidx.espresso.core
     androidTestImplementation libs.androidx.junit
-    implementation platform('com.google.firebase:firebase-bom:34.19.0')     // versionado automatico entre servicios
-    implementation 'com.google.firebase:firebase-auth-ktx'                  // autenticacion
-    implementation 'com.google.firebase:firebase-firestore-ktx'             // base de datos
-    implementation 'com.google.firebase:firebase-storage-ktx'               // subir y bajar imagenes
-    implementation 'com.google.firebase:firebase-messaging-ktx'             // notificaciones push
+    implementation platform('com.google.firebase:firebase-bom:34.19.0')
+    // versionado automatico entre servicios
+    implementation 'com.google.firebase:firebase-auth'                  // autenticacion
+    implementation 'com.google.firebase:firebase-firestore'             // base de datos
+    implementation 'com.google.firebase:firebase-storage'               // subir y bajar imagenes
+    implementation 'com.google.firebase:firebase-messaging'             // notificaciones push
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0' // manejo de co-rutinas
     implementation("io.coil-kt:coil:2.7.0")                                 // manejo de imagenes
-
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0' // permite el uso de await con tareas de Firebase
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.11.0' // ViewModel y viewModelScope
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.11.0'     // LiveData
 }
