@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import edu.pucmm.proyecto_android.MainActivity
 import edu.pucmm.proyecto_android.databinding.ActivityLoginBinding
 import edu.pucmm.proyecto_android.viewmodel.AuthEstado
 import edu.pucmm.proyecto_android.viewmodel.AuthViewModel
