@@ -6,40 +6,36 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import edu.pucmm.proyecto_android.MainActivity
-import edu.pucmm.proyecto_android.databinding.ActivityLoginBinding
+import edu.pucmm.proyecto_android.databinding.ActivityRegistroBinding
 import edu.pucmm.proyecto_android.viewmodel.AuthEstado
 import edu.pucmm.proyecto_android.viewmodel.AuthViewModel
 
-class LoginActivity : AppCompatActivity() {
+class RegistroActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding: ActivityRegistroBinding
     private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        if (viewModel.haySesionActiva()) {
-            irAlInicio()
-            return
-        }
 
         configurarBotones()
         observarEstado()
     }
 
     private fun configurarBotones() {
-        binding.btnLogin.setOnClickListener {
+        binding.btnRegistrar.setOnClickListener {
+            val nombre = binding.etNombre.text.toString()
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
-            viewModel.iniciarSesion(email, password)
+            val confirmarPassword = binding.etConfirmarPassword.text.toString()
+            viewModel.registrar(nombre, email, password, confirmarPassword)
         }
 
-        binding.tvRegistro.setOnClickListener {
-            val intent = Intent(this, RegistroActivity::class.java)
-            startActivity(intent)
+        binding.tvLogin.setOnClickListener {
+            finish() // regresa a LoginActivity, que sigue abierta detras
         }
     }
 
@@ -68,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun mostrarCargando(cargando: Boolean) {
         binding.progressBar.visibility = if (cargando) View.VISIBLE else View.GONE
-        binding.btnLogin.isEnabled = !cargando
+        binding.btnRegistrar.isEnabled = !cargando
     }
 
     private fun mostrarError(mensaje: String?) {
