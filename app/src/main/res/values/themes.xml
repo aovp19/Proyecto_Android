@@ -2,7 +2,19 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Proyecto_Android" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/deep_lilac</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/classic_lavender</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="android:colorBackground">@color/lavender_mist</item>
+        <item name="colorOnBackground">@color/text_dark</item>
+
+        <item name="colorSurface">@color/pale_lilac</item>
+        <item name="colorOnSurface">@color/text_dark</item>
+
+        <item name="colorError">@color/error_red</item>
     </style>
 
     <style name="Theme.Proyecto_Android" parent="Base.Theme.Proyecto_Android" />

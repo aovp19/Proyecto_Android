@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="deep_lilac">#7E57C2</color>
+    <color name="classic_lavender">#9575CD</color>
+    <color name="periwinkle">#B39DDB</color>
+    <color name="pale_lilac">#D1C4E9</color>
+    <color name="lavender_mist">#F3E5F5</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="text_dark">#3A2E4D</color>
+    <color name="error_red">#D32F2F</color>
 </resources>
