@@ -9,9 +9,18 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:title="@string/app_name"
-        app:titleTextColor="?attr/colorOnPrimary" />
+        android:background="?attr/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/agbalumo"
+            android:text="@string/app_name"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="24sp" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <ProgressBar
         android:id="@+id/progressBar"

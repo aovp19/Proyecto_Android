@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        // para que no se mande con el titulo de la app, porque hay uno custom ya
+        supportActionBar?.title = ""
 
         binding.rvUsuarios.layoutManager = LinearLayoutManager(this)
 
