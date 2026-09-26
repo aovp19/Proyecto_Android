@@ -10,4 +10,5 @@
     <string name="ya_tienes_una_cuenta_inicia_sesion">¿Ya tienes cuenta? Inicia sesión</string>
     <string name="cerrar_sesion">Cerrar sesión</string>
     <string name="no_hay_otros_usuarios_registrados">No hay otros usuarios registrados todavía</string>
+    <string name="escribe_un_mensaje">Escribe un mensaje</string>
 </resources>
