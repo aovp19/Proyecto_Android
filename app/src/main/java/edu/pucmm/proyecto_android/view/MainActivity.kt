@@ -65,12 +65,10 @@ class MainActivity : AppCompatActivity() {
                         binding.tvVacio.visibility = View.GONE
                         binding.rvUsuarios.visibility = View.VISIBLE
                         binding.rvUsuarios.adapter = UsuarioAdapter(estado.usuarios) { usuario ->
-                            binding.rvUsuarios.adapter = UsuarioAdapter(estado.usuarios) { usuario ->
-                                val intent = Intent(this, ChatActivity::class.java)
-                                intent.putExtra("otroUsuarioUid", usuario.id)
-                                intent.putExtra("otroUsuarioNombre", usuario.nombre)
-                                startActivity(intent)
-                            }
+                            val intent = Intent(this, ChatActivity::class.java)
+                            intent.putExtra("otroUsuarioUid", usuario.id)
+                            intent.putExtra("otroUsuarioNombre", usuario.nombre)
+                            startActivity(intent)
                         }
                     }
                 }

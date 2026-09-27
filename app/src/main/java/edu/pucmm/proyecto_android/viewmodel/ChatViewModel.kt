@@ -31,13 +31,13 @@ class ChatViewModel (private val otroUsuarioUid: String) : ViewModel() {
 
             try {
                 repository.escucharMensajes(chatId).collect { listaMensajes ->
+                    android.util.Log.d("ChatDebug", "Mensajes recibidos: ${listaMensajes.size} para chatId=$chatId")
                     _mensajes.value = listaMensajes
                 }
 
             } catch (e: Exception) {
                 // Si falla solo no se actualiza la lista.
-                // TODO: manejar el error
-                e.printStackTrace()
+                android.util.Log.e("ChatDebug", "Error al escuchar mensajes: ${e.message}", e)
             }
         }
     }
@@ -48,6 +48,12 @@ class ChatViewModel (private val otroUsuarioUid: String) : ViewModel() {
 
         viewModelScope.launch {
             repository.enviarMensaje(chatId, textoLimpio)
+                .onSuccess {
+                    android.util.Log.d("ChatDebug", "Mensaje enviado correctamente a chatId=$chatId")
+                }
+                .onFailure { error ->
+                    android.util.Log.e("ChatDebug", "Error al enviar mensaje: ${error.message}", error)
+                }
         }
     }
 

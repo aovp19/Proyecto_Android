@@ -44,5 +44,10 @@ class MensajeAdapter (
         }
     }
 
+    override fun getItemViewType(posicion: Int): Int {
+        val mensaje = mensajes[posicion]
+        return if (mensaje.idEmisor == miUid) TIPO_PROPIO else TIPO_AJENO
+    }
+
     override fun getItemCount(): Int = mensajes.size
 }

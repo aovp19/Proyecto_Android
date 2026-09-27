@@ -39,6 +39,18 @@ class ChatActivity : AppCompatActivity() {
         }
 
         observarMensajes()
+
+        // para hacer scroll al final de la pantalla cuando salga el teclado
+        binding.etMensaje.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.rvMensajes.postDelayed({
+                    val itemCount = binding.rvMensajes.adapter?.itemCount ?: 0
+                    if (itemCount > 0) {
+                        binding.rvMensajes.scrollToPosition(itemCount - 1)
+                    }
+                }, 300)
+            }
+        }
     }
 
     private fun observarMensajes() {
