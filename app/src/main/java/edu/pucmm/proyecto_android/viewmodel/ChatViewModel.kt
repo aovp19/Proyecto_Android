@@ -22,6 +22,8 @@ class ChatViewModel (private val otroUsuarioUid: String) : ViewModel() {
 
     val miUid: String = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
+    private var miNombre: String? = null
+
     init {
         escucharMensajes()
     }
@@ -47,7 +49,10 @@ class ChatViewModel (private val otroUsuarioUid: String) : ViewModel() {
         if (textoLimpio.isEmpty())  return
 
         viewModelScope.launch {
-            repository.enviarMensaje(chatId, textoLimpio)
+            // primero lo busca en el firestore, y luego lo reutiliza
+            val nombre =  miNombre ?: repository.obtenerMiNombre().also { miNombre = it }
+
+            repository.enviarMensaje(chatId, textoLimpio, nombre)
                 .onSuccess {
                     android.util.Log.d("ChatDebug", "Mensaje enviado correctamente a chatId=$chatId")
                 }

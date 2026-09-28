@@ -22,7 +22,7 @@ class ChatRepository (
     }
 
     // envia un mensaje nuevo al chat
-    suspend fun enviarMensaje(chatId: String, texto: String): Result<Unit> {
+    suspend fun enviarMensaje(chatId: String, texto: String, nombreEmisor: String): Result<Unit> {
         return try {
             val miUid = auth.currentUser?.uid
                 ?: return Result.failure(Exception("No hay sesión activa"))
@@ -30,6 +30,7 @@ class ChatRepository (
 
             val mensaje = hashMapOf(
                 "idEmisor" to miUid,
+                "nombreEmisor" to nombreEmisor,
                 "texto" to texto,
                 "fecha" to com.google.firebase.Timestamp.now()
             )
@@ -63,5 +64,19 @@ class ChatRepository (
                 trySend(mensajes)
             }
         awaitClose { listener.remove() }
+    }
+
+    // trae el nombre del usuario que tiene la seccion activa
+    suspend fun obtenerMiNombre(): String {
+        val miUid = auth.currentUser?.uid ?: return ""
+
+        return try {
+            firestore.collection("usuarios").document(miUid)
+                .get()
+                .await()
+                .getString("nombre") ?: ""
+        } catch (e: Exception) {
+            ""
+        }
     }
 }

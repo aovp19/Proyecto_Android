@@ -15,7 +15,7 @@
         <DialogSelection />
       </SelectionState>
       <SelectionState runConfigName="unitTest">
-        <option name="selectionMode" value="DROPDOWN" />
+        <option name="selectionMode" value="DIALOG" />
         <DropdownSelection timestamp="2026-09-25T00:18:43.226440600Z">
           <Target type="DEFAULT_BOOT">
             <handle>
@@ -27,12 +27,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="PhysicalDevice" identifier="serial=R52Y80BKE4H" />
+                <DeviceId pluginId="PhysicalDevice" identifier="serial=RZCX701TRGD" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="PhysicalDevice" identifier="serial=RZCX701TRGD" />
+                <DeviceId pluginId="PhysicalDevice" identifier="serial=R52Y80BKE4H" />
               </handle>
             </Target>
           </targets>

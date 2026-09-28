@@ -56,9 +56,12 @@ class ChatActivity : AppCompatActivity() {
     private fun observarMensajes() {
         lifecycleScope.launch {
             viewModel.mensajes.collect { listaMensajes ->
-                binding.rvMensajes.adapter = MensajeAdapter(listaMensajes, viewModel.miUid)
-                if (listaMensajes.isNotEmpty()) {
-                    binding.rvMensajes.scrollToPosition(listaMensajes.size - 1)
+                val adapter = MensajeAdapter(listaMensajes, viewModel.miUid)
+                binding.rvMensajes.adapter = adapter
+
+                // usamos el total de items del adapter, no de mensajes
+                if (adapter.itemCount > 0) {
+                    binding.rvMensajes.scrollToPosition(adapter.itemCount - 1)
                 }
             }
         }
