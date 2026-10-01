@@ -51,7 +51,7 @@ object ImagenUtil {
     }
 
     // lee cuantos grados hay que girar la imagen segun su metadato EXIF
-    private fun leerRotacion(resolver: ContentResolver, urzi: Uri): Float {
+    private fun leerRotacion(resolver: ContentResolver, uri: Uri): Float {
         val orientacion = resolver.openInputStream(uri)?.use {
             ExifInterface(it).getAttributeInt(
                 ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL
