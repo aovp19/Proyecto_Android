@@ -9,11 +9,30 @@ import edu.pucmm.proyecto_android.adapters.MensajeAdapter
 import edu.pucmm.proyecto_android.databinding.ActivityChatBinding
 import edu.pucmm.proyecto_android.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import edu.pucmm.proyecto_android.util.ImagenUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import androidx.core.app.NotificationManagerCompat
+import edu.pucmm.proyecto_android.service.FcmService
 
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var viewModel: ChatViewModel
+
+    private var uidOtro = ""
+
+    private val selectorImagen = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri == null) return@registerForActivityResult
+        lifecycleScope.launch {
+            val bytes = withContext(Dispatchers.IO) { ImagenUtil.comprimir(contentResolver, uri) }
+            if (bytes != null) viewModel.enviarImagen(bytes)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +43,7 @@ class ChatActivity : AppCompatActivity() {
         supportActionBar?.title = ""
 
         val otroUsuarioUid = intent.getStringExtra("otroUsuarioUid") ?: ""
+        uidOtro = otroUsuarioUid
         val otroUsuarioNombre = intent.getStringExtra("otroUsuarioNombre") ?: ""
 
         binding.tvNombreUsuario.text = otroUsuarioNombre
@@ -36,6 +56,12 @@ class ChatActivity : AppCompatActivity() {
             val texto = binding.etMensaje.text.toString()
             viewModel.enviarMensaje(texto)
             binding.etMensaje.setText("")
+        }
+
+        binding.btnAdjuntar.setOnClickListener {
+            selectorImagen.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
         }
 
         observarMensajes()
@@ -65,5 +91,16 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        FcmService.chatAbiertoCon = uidOtro
+        NotificationManagerCompat.from(this).cancel(uidOtro.hashCode())
+    }
+
+    override fun onStop() {
+        FcmService.chatAbiertoCon = null
+        super.onStop()
     }
 }

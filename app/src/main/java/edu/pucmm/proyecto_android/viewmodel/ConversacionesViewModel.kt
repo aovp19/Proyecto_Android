@@ -21,6 +21,7 @@ class ConversacionesViewModel : ViewModel() {
     // Carga los usuarios inmediatamente se carga el ViewModel
     init {
         cargarUsuarios()
+        registrarTokenFcm()
     }
 
     fun cargarUsuarios() {
@@ -33,5 +34,15 @@ class ConversacionesViewModel : ViewModel() {
         }
     }
 
-    fun cerrarSesion() = authRepository.cerrarSesion()
+    private fun registrarTokenFcm() {
+        viewModelScope.launch { usuarioRepository.guardarTokenFcm() }
+    }
+
+    fun cerrarSesion(alTerminar: () -> Unit) {
+        viewModelScope.launch {
+            usuarioRepository.eliminarTokenFcm()
+            authRepository.cerrarSesion()
+            alTerminar()
+        }
+    }
 }

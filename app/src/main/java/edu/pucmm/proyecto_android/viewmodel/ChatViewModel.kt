@@ -62,6 +62,14 @@ class ChatViewModel (private val otroUsuarioUid: String) : ViewModel() {
         }
     }
 
+    fun enviarImagen(bytes: ByteArray) {
+        viewModelScope.launch {
+            val nombre = miNombre ?: repository.obtenerMiNombre().also { miNombre = it }
+            repository.enviarImagen(chatId, bytes, nombre)
+                .onFailure { android.util.Log.e("ChatDebug", "Error al enviar imagen: ${it.message}", it) }
+        }
+    }
+
     // fabrica este viewModel pasandole el uid del otro usuario
     class Factory(private val otroUsuarioUid: String) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass :Class<T>) : T {

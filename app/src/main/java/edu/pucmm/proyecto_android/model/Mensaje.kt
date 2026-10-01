@@ -7,5 +7,6 @@ data class Mensaje (
     val idEmisor: String = "",
     val nombreEmisor: String = "",
     val texto: String = "",
+    val imagenUrl: String = "",
     val fecha: Timestamp = Timestamp.now()
 )

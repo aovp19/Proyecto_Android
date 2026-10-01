@@ -11,6 +11,9 @@ import edu.pucmm.proyecto_android.model.Mensaje
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import coil.load
+import android.widget.ImageView
+import androidx.core.view.isVisible
 
 // lo que puede haber en la lista del chat, una etiqueta de dia o un mensaje
 sealed class ItemChat {
@@ -106,10 +109,14 @@ class MensajeAdapter(
 
                 when (holder) {
                     is PropioViewHolder -> {
+                        mostrarImagen(holder.binding.ivImagen, item.mensaje.imagenUrl)
+                        holder.binding.tvTexto.isVisible = item.mensaje.texto.isNotEmpty()
                         holder.binding.tvTexto.text = item.mensaje.texto
                         holder.binding.tvFecha.text = hora
                     }
                     is AjenoViewHolder -> {
+                        mostrarImagen(holder.binding.ivImagen, item.mensaje.imagenUrl)
+                        holder.binding.tvTexto.isVisible = item.mensaje.texto.isNotEmpty()
                         holder.binding.tvTexto.text = item.mensaje.texto
                         holder.binding.tvFecha.text = hora
                     }
@@ -120,4 +127,9 @@ class MensajeAdapter(
 
     // ahora se cuentan los items (mensajes + etiquetas), no solo los mensajes
     override fun getItemCount(): Int = items.size
+
+    private fun mostrarImagen(iv: ImageView, url: String) {
+        iv.isVisible = url.isNotEmpty()
+        if (url.isNotEmpty()) iv.load(url)
+    }
 }

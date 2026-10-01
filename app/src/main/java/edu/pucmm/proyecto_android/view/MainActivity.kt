@@ -13,11 +13,20 @@ import edu.pucmm.proyecto_android.adapters.UsuarioAdapter
 import edu.pucmm.proyecto_android.databinding.ActivityMainBinding
 import edu.pucmm.proyecto_android.viewmodel.ConversacionesViewModel
 import edu.pucmm.proyecto_android.viewmodel.UsuariosEstado
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: ConversacionesViewModel by viewModels()
+
+    private val pedirPermisoNotificaciones = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding.rvUsuarios.layoutManager = LinearLayoutManager(this)
 
         observarEstado()
+        solicitarPermisoNotificaciones()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -40,8 +50,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.accionCerrarSesion) {
-            viewModel.cerrarSesion()
-            irALogin()
+            viewModel.cerrarSesion {
+                irALogin()
+            }
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -78,6 +89,15 @@ class MainActivity : AppCompatActivity() {
                     binding.tvVacio.text = estado.mensaje
                 }
             }
+        }
+    }
+
+    private fun solicitarPermisoNotificaciones() {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            pedirPermisoNotificaciones.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 

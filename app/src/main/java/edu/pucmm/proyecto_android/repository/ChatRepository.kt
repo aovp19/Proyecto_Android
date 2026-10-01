@@ -1,6 +1,8 @@
 package edu.pucmm.proyecto_android.repository
 
-import android.system.Os.close
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageMetadata
+import java.util.UUID
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.pucmm.proyecto_android.model.Mensaje
@@ -12,38 +14,14 @@ import kotlinx.coroutines.tasks.await
 
 class ChatRepository (
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val firestore: FirebaseFirestore =  FirebaseFirestore.getInstance()
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance(),
+    private val storage: FirebaseStorage = FirebaseStorage.getInstance()
 ) {
 
     // genera el mismo id de chat sin importar el orden de los user ids
     fun generarChatId(otroUid: String): String {
         val miUid = auth.currentUser?.uid ?: ""
         return if (miUid < otroUid) "${miUid}_$otroUid" else "${otroUid}_$miUid"
-    }
-
-    // envia un mensaje nuevo al chat
-    suspend fun enviarMensaje(chatId: String, texto: String, nombreEmisor: String): Result<Unit> {
-        return try {
-            val miUid = auth.currentUser?.uid
-                ?: return Result.failure(Exception("No hay sesión activa"))
-
-
-            val mensaje = hashMapOf(
-                "idEmisor" to miUid,
-                "nombreEmisor" to nombreEmisor,
-                "texto" to texto,
-                "fecha" to com.google.firebase.Timestamp.now()
-            )
-
-            firestore.collection("chats").document(chatId)
-                .collection("mensajes")
-                .add(mensaje)
-                .await()
-
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
     }
 
     // escucha los mensajes de un chat en tiempo real
@@ -58,6 +36,7 @@ class ChatRepository (
                 }
 
                 val mensajes = snapshot?.documents?.mapNotNull { doc ->
+                    if (doc.getTimestamp("fecha") == null) return@mapNotNull null
                     doc.toObject(Mensaje::class.java)?.copy(id = doc.id)
                 } ?: emptyList()
 
@@ -77,6 +56,59 @@ class ChatRepository (
                 .getString("nombre") ?: ""
         } catch (e: Exception) {
             ""
+        }
+    }
+    // envia un mensaje de texto nuevo al chat
+    suspend fun enviarMensaje(chatId: String, texto: String, nombreEmisor: String): Result<Unit> {
+        return try {
+            val miUid = auth.currentUser?.uid
+                ?: return Result.failure(Exception("No hay sesión activa"))
+
+            val mensaje = hashMapOf(
+                "idEmisor" to miUid,
+                "nombreEmisor" to nombreEmisor,
+                "texto" to texto,
+                "fecha" to com.google.firebase.Timestamp.now()
+            )
+
+            firestore.collection("chats").document(chatId)
+                .collection("mensajes")
+                .add(mensaje)
+                .await()
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // sube la imagen a Storage y envia el mensaje con su url
+    suspend fun enviarImagen(chatId: String, bytes: ByteArray, nombreEmisor: String): Result<Unit> {
+        return try {
+            val miUid = auth.currentUser?.uid
+                ?: return Result.failure(Exception("No hay sesión activa"))
+
+            val ref = storage.reference.child("chats/$chatId/${UUID.randomUUID()}.jpg")
+            val metadata = StorageMetadata.Builder().setContentType("image/jpeg").build()
+            ref.putBytes(bytes, metadata).await()
+            val url = ref.downloadUrl.await().toString()
+
+            val mensaje = hashMapOf(
+                "idEmisor" to miUid,
+                "nombreEmisor" to nombreEmisor,
+                "texto" to "",
+                "imagenUrl" to url,
+                "fecha" to com.google.firebase.Timestamp.now()
+            )
+
+            firestore.collection("chats").document(chatId)
+                .collection("mensajes")
+                .add(mensaje)
+                .await()
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }
