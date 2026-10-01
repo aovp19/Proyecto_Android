@@ -106,6 +106,8 @@ class MensajeAdapter(
             }
             is ItemChat.Burbuja -> {
                 val hora = formatoHora.format(item.mensaje.fecha.toDate())
+                // si el nombre viene vacio (falla de obtenerMiNombre) se muestra solo la hora
+                val pie = if (item.mensaje.nombreEmisor.isNotEmpty()) "${item.mensaje.nombreEmisor} · $hora" else hora
 
                 when (holder) {
                     is PropioViewHolder -> {
@@ -113,13 +115,13 @@ class MensajeAdapter(
                         holder.binding.tvTexto.isVisible = item.mensaje.texto.isNotEmpty()
                         holder.binding.tvTexto.text = item.mensaje.texto
                         val subiendo = item.mensaje.imagenUrl.isNotEmpty() && !item.mensaje.imagenUrl.startsWith("http")
-                        holder.binding.tvFecha.text = if (subiendo) "Enviando…" else hora
+                        holder.binding.tvFecha.text = if (subiendo) "Enviando…" else pie
                     }
                     is AjenoViewHolder -> {
                         mostrarImagen(holder.binding.ivImagen, item.mensaje.imagenUrl)
                         holder.binding.tvTexto.isVisible = item.mensaje.texto.isNotEmpty()
                         holder.binding.tvTexto.text = item.mensaje.texto
-                        holder.binding.tvFecha.text = hora
+                        holder.binding.tvFecha.text = pie
                     }
                 }
             }
