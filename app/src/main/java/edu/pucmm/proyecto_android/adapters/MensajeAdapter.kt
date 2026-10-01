@@ -112,7 +112,8 @@ class MensajeAdapter(
                         mostrarImagen(holder.binding.ivImagen, item.mensaje.imagenUrl)
                         holder.binding.tvTexto.isVisible = item.mensaje.texto.isNotEmpty()
                         holder.binding.tvTexto.text = item.mensaje.texto
-                        holder.binding.tvFecha.text = hora
+                        val subiendo = item.mensaje.imagenUrl.isNotEmpty() && !item.mensaje.imagenUrl.startsWith("http")
+                        holder.binding.tvFecha.text = if (subiendo) "Enviando…" else hora
                     }
                     is AjenoViewHolder -> {
                         mostrarImagen(holder.binding.ivImagen, item.mensaje.imagenUrl)
@@ -130,6 +131,7 @@ class MensajeAdapter(
 
     private fun mostrarImagen(iv: ImageView, url: String) {
         iv.isVisible = url.isNotEmpty()
+        iv.alpha = if (url.startsWith("http")) 1f else 0.5f
         if (url.isNotEmpty()) iv.load(url)
     }
 }

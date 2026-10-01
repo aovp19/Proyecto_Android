@@ -1,16 +1,16 @@
 package edu.pucmm.proyecto_android.repository
 
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageMetadata
-import java.util.UUID
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageMetadata
 import edu.pucmm.proyecto_android.model.Mensaje
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 class ChatRepository (
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
@@ -36,6 +36,7 @@ class ChatRepository (
                 }
 
                 val mensajes = snapshot?.documents?.mapNotNull { doc ->
+                    // ignora documentos sin fecha valida
                     if (doc.getTimestamp("fecha") == null) return@mapNotNull null
                     doc.toObject(Mensaje::class.java)?.copy(id = doc.id)
                 } ?: emptyList()
@@ -58,6 +59,7 @@ class ChatRepository (
             ""
         }
     }
+
     // envia un mensaje de texto nuevo al chat
     suspend fun enviarMensaje(chatId: String, texto: String, nombreEmisor: String): Result<Unit> {
         return try {
@@ -68,7 +70,7 @@ class ChatRepository (
                 "idEmisor" to miUid,
                 "nombreEmisor" to nombreEmisor,
                 "texto" to texto,
-                "fecha" to com.google.firebase.Timestamp.now()
+                "fecha" to Timestamp.now()
             )
 
             firestore.collection("chats").document(chatId)
@@ -82,8 +84,13 @@ class ChatRepository (
         }
     }
 
-    // sube la imagen a Storage y envia el mensaje con su url
-    suspend fun enviarImagen(chatId: String, bytes: ByteArray, nombreEmisor: String): Result<Unit> {
+    // sube la imagen a Storage y envia el mensaje con su url (usa el id que decide la app)
+    suspend fun enviarImagen(
+        chatId: String,
+        bytes: ByteArray,
+        nombreEmisor: String,
+        idMensaje: String
+    ): Result<Unit> {
         return try {
             val miUid = auth.currentUser?.uid
                 ?: return Result.failure(Exception("No hay sesión activa"))
@@ -98,12 +105,13 @@ class ChatRepository (
                 "nombreEmisor" to nombreEmisor,
                 "texto" to "",
                 "imagenUrl" to url,
-                "fecha" to com.google.firebase.Timestamp.now()
+                "fecha" to Timestamp.now()
             )
 
             firestore.collection("chats").document(chatId)
                 .collection("mensajes")
-                .add(mensaje)
+                .document(idMensaje)
+                .set(mensaje)
                 .await()
 
             Result.success(Unit)

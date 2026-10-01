@@ -16,6 +16,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import androidx.core.app.NotificationManagerCompat
 import edu.pucmm.proyecto_android.service.FcmService
+import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 
 class ChatActivity : AppCompatActivity() {
 
@@ -28,9 +31,11 @@ class ChatActivity : AppCompatActivity() {
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         if (uri == null) return@registerForActivityResult
+        val idMensaje = viewModel.mostrarPendiente(uri.toString())
         lifecycleScope.launch {
             val bytes = withContext(Dispatchers.IO) { ImagenUtil.comprimir(contentResolver, uri) }
-            if (bytes != null) viewModel.enviarImagen(bytes)
+            if (bytes != null) viewModel.enviarImagen(bytes, idMensaje)
+            else viewModel.quitarPendiente(idMensaje)
         }
     }
 
@@ -56,6 +61,14 @@ class ChatActivity : AppCompatActivity() {
             val texto = binding.etMensaje.text.toString()
             viewModel.enviarMensaje(texto)
             binding.etMensaje.setText("")
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errores.collect {
+                    Toast.makeText(this@ChatActivity, it, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         binding.btnAdjuntar.setOnClickListener {
