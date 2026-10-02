@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- paleta base -->
     <color name="deep_lilac">#7E57C2</color>
     <color name="classic_lavender">#9575CD</color>
     <color name="periwinkle">#B39DDB</color>
     <color name="pale_lilac">#D1C4E9</color>
     <color name="lavender_mist">#F3E5F5</color>
-
     <color name="white">#FFFFFF</color>
     <color name="text_dark">#3A2E4D</color>
     <color name="error_red">#D32F2F</color>
+
+    <!-- colores que cambian entre modo claro y oscuro (los oscuros estan en values-night) -->
+    <color name="accent">#7E57C2</color>
+    <color name="on_accent">#FFFFFF</color>
+    <color name="app_background">#F6F0FA</color>
+    <color name="app_surface">#FFFFFF</color>
+    <color name="text_primary">#2B2140</color>
+    <color name="text_secondary">#6E6485</color>
+    <color name="header_start">#6A43B5</color>
+    <color name="header_end">#9575CD</color>
+    <color name="bubble_own_start">#7E57C2</color>
+    <color name="bubble_own_end">#6A43B5</color>
+    <color name="bubble_own_text">#FFFFFF</color>
+    <color name="bubble_other">#FFFFFF</color>
+    <color name="bubble_other_stroke">#E4D9F2</color>
+    <color name="bubble_other_text">#2B2140</color>
+    <color name="chip_bg">#E4D9F2</color>
+    <color name="chip_text">#4A3A6B</color>
+    <color name="input_bg">#F1EAF9</color>
 </resources>

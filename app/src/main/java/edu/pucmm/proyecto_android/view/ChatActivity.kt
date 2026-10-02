@@ -19,6 +19,7 @@ import edu.pucmm.proyecto_android.service.FcmService
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import edu.pucmm.proyecto_android.util.configurarBordes
 
 class ChatActivity : AppCompatActivity() {
 
@@ -44,6 +45,7 @@ class ChatActivity : AppCompatActivity() {
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        configurarBordes(superior = binding.header, inferior = binding.barraMensaje)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = ""
 
@@ -52,6 +54,9 @@ class ChatActivity : AppCompatActivity() {
         val otroUsuarioNombre = intent.getStringExtra("otroUsuarioNombre") ?: ""
 
         binding.tvNombreUsuario.text = otroUsuarioNombre
+        binding.btnVolver.setOnClickListener { finish() }
+        val avatar = intent.getStringExtra("otroUsuarioAvatar").orEmpty()
+        binding.tvAvatarChat.text = avatar.ifEmpty { otroUsuarioNombre.trim().take(1).uppercase() }
 
         viewModel = ViewModelProvider(this, ChatViewModel.Factory(otroUsuarioUid))[ChatViewModel::class.java]
 

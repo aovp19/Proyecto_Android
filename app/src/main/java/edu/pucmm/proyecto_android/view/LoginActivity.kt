@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import edu.pucmm.proyecto_android.databinding.ActivityLoginBinding
 import edu.pucmm.proyecto_android.viewmodel.AuthEstado
 import edu.pucmm.proyecto_android.viewmodel.AuthViewModel
+import edu.pucmm.proyecto_android.util.configurarBordes
 
 class LoginActivity : AppCompatActivity() {
 
@@ -19,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        configurarBordes(superior = binding.header, inferior = binding.root)
 
         if (viewModel.haySesionActiva()) {
             irAlInicio()

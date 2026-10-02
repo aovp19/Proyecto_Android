@@ -92,4 +92,30 @@ class UsuarioRepository (
             // si falla, se limpia despues cuando la Cloud Function detecte el token invalido
         }
     }
+
+    // trae el avatar que eligio el usuario con la sesion activa
+    suspend fun obtenerMiAvatar(): String {
+        val uid = auth.currentUser?.uid ?: return ""
+        return try {
+            usuariosCollection.document(uid).get().await().getString("avatar") ?: ""
+        } catch (e: Exception) {
+            ""
+        }
+    }
+
+    // guarda el avatar elegido (merge para no borrar los demas campos, como el token)
+    suspend fun guardarAvatar(avatar: String): Result<Unit> {
+        return try {
+            val uid = auth.currentUser?.uid
+                ?: return Result.failure(Exception("No hay sesión activa"))
+
+            usuariosCollection.document(uid)
+                .set(mapOf("avatar" to avatar), SetOptions.merge())
+                .await()
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

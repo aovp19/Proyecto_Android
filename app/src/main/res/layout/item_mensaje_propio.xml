@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingHorizontal="12dp"
-    android:paddingVertical="4dp">
+    android:paddingVertical="3dp">
 
     <View
         android:layout_width="0dp"
@@ -18,14 +19,17 @@
         android:gravity="end"
         android:orientation="vertical">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivImagen"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
             android:layout_marginBottom="4dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imagen_del_mensaje"
+            android:maxHeight="300dp"
             android:scaleType="fitCenter"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:shapeAppearanceOverlay="@style/ImagenRedondeada" />
 
         <TextView
             android:id="@+id/tvTexto"
@@ -33,17 +37,21 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_burbuja_propia"
             android:fontFamily="@font/quicksand_semibold"
-            android:padding="12dp"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:maxWidth="280dp"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp"
+            android:textColor="@color/bubble_own_text"
+            android:textSize="16sp"
+            tools:text="Hola, ¿cómo estás?" />
 
         <TextView
             android:id="@+id/tvFecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
+            android:layout_marginHorizontal="6dp"
+            android:layout_marginTop="2dp"
             android:fontFamily="@font/quicksand_semibold"
-            android:textColor="?attr/colorOnBackground"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="11sp"
             tools:text="17:21" />
 

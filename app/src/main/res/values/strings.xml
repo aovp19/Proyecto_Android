@@ -11,4 +11,12 @@
     <string name="cerrar_sesion">Cerrar sesión</string>
     <string name="no_hay_otros_usuarios_registrados">No hay otros usuarios registrados todavía</string>
     <string name="escribe_un_mensaje">Escribe un mensaje</string>
+    <string name="tagline">Conversaciones en tiempo real</string>
+    <string name="tus_conversaciones">Tus conversaciones</string>
+    <string name="buscar_conversacion">Buscar conversación</string>
+    <string name="volver">Volver</string>
+    <string name="adjuntar_imagen">Adjuntar imagen</string>
+    <string name="imagen_del_mensaje">Imagen del mensaje</string>
+    <string name="cambiar_avatar">Cambiar avatar</string>
+    <string name="elige_tu_avatar">Elige tu avatar</string>
 </resources>

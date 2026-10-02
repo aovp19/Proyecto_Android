@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/accionCerrarSesion"
+        android:icon="@drawable/ic_logout"
         android:title="@string/cerrar_sesion"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 </menu>

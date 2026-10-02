@@ -16,12 +16,21 @@ class ConversacionesViewModel : ViewModel() {
     private val usuarioRepository = UsuarioRepository()
 
     private val _estado = MutableLiveData<UsuariosEstado>()
+
+    private val _miAvatar = MutableLiveData("")
+    val miAvatar: LiveData<String> = _miAvatar
+
     val estado: LiveData<UsuariosEstado> = _estado
+
+    private var todosLosUsuarios: List<User> = emptyList()
+
+    private var textoBusqueda = ""
 
     // Carga los usuarios inmediatamente se carga el ViewModel
     init {
         cargarUsuarios()
         registrarTokenFcm()
+        cargarMiAvatar()
     }
 
     fun cargarUsuarios() {
@@ -29,7 +38,10 @@ class ConversacionesViewModel : ViewModel() {
 
         viewModelScope.launch {
             usuarioRepository.obtenerUsuarios()
-                .onSuccess { lista -> _estado.value = UsuariosEstado.Exito(lista) }
+                .onSuccess { lista ->
+                    todosLosUsuarios = lista
+                    publicarFiltrados()
+                }
                 .onFailure { _estado.value = UsuariosEstado.Error("No se pudo cargar la lista de usuarios") }
         }
     }
@@ -44,5 +56,30 @@ class ConversacionesViewModel : ViewModel() {
             authRepository.cerrarSesion()
             alTerminar()
         }
+    }
+
+    fun buscar(texto: String) {
+        textoBusqueda = texto.trim()
+        publicarFiltrados()
+    }
+
+    fun hayBusqueda(): Boolean = textoBusqueda.isNotEmpty()
+
+    private fun publicarFiltrados() {
+        val filtrados = if (textoBusqueda.isEmpty()) {
+            todosLosUsuarios
+        } else {
+            todosLosUsuarios.filter { it.nombre.contains(textoBusqueda, ignoreCase = true) }
+        }
+        _estado.value = UsuariosEstado.Exito(filtrados)
+    }
+
+    private fun cargarMiAvatar() {
+        viewModelScope.launch { _miAvatar.value = usuarioRepository.obtenerMiAvatar() }
+    }
+
+    fun elegirAvatar(avatar: String) {
+        _miAvatar.value = avatar // se ve al instante
+        viewModelScope.launch { usuarioRepository.guardarAvatar(avatar) }
     }
 }

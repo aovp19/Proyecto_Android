@@ -1,18 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Proyecto_Android" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/deep_lilac</item>
-        <item name="colorOnPrimary">@color/white</item>
+
+    <style name="Base.Theme.Proyecto_Android" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorOnPrimary">@color/on_accent</item>
+        <item name="colorPrimaryContainer">@color/chip_bg</item>
+        <item name="colorOnPrimaryContainer">@color/chip_text</item>
 
         <item name="colorSecondary">@color/classic_lavender</item>
         <item name="colorOnSecondary">@color/white</item>
 
-        <item name="android:colorBackground">@color/lavender_mist</item>
-        <item name="colorOnBackground">@color/text_dark</item>
+        <item name="android:colorBackground">@color/app_background</item>
+        <item name="colorOnBackground">@color/text_primary</item>
 
-        <item name="colorSurface">@color/pale_lilac</item>
-        <item name="colorOnSurface">@color/text_dark</item>
+        <item name="colorSurface">@color/app_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
 
         <item name="colorError">@color/error_red</item>
     </style>
@@ -20,6 +22,27 @@
     <style name="ToolbarTitulo" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:fontFamily">@font/agbalumo</item>
         <item name="android:textSize">26sp</item>
+    </style>
+
+    <!-- campos de texto redondeados -->
+    <style name="Campo" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+    </style>
+
+    <style name="BotonPrincipal" parent="Widget.Material3.Button">
+        <item name="android:minHeight">56dp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+    </style>
+
+    <!-- imagenes del chat con esquinas redondeadas -->
+    <style name="ImagenRedondeada" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
     </style>
 
     <style name="Theme.Proyecto_Android" parent="Base.Theme.Proyecto_Android" />

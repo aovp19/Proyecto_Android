@@ -1,0 +1,38 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="250dp">
+
+    <!-- Fondo curvo -->
+    <ImageView
+        android:id="@+id/fondoCurvo"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:importantForAccessibility="no"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_perfil_curvo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Foto de perfil circular, centrada sobre la curva -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/fotoPerfil"
+        android:layout_width="122dp"
+        android:layout_height="117dp"
+        android:layout_marginTop="80dp"
+        android:background="@android:color/white"
+        android:padding="3dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.901"
+        app:shapeAppearanceOverlay="@style/Circular"
+        app:strokeColor="@color/classic_lavender"
+        app:strokeWidth="2dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

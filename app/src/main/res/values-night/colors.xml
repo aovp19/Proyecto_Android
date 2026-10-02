@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="error_red">#EF9A9A</color>
+    <color name="accent">#B39DDB</color>
+    <color name="on_accent">#2A1B4D</color>
+    <color name="app_background">#15111C</color>
+    <color name="app_surface">#211A2E</color>
+    <color name="text_primary">#EDE7F6</color>
+    <color name="text_secondary">#B8AACF</color>
+    <color name="header_start">#3B2A63</color>
+    <color name="header_end">#5B3F99</color>
+    <color name="bubble_own_start">#7E57C2</color>
+    <color name="bubble_own_end">#6A43B5</color>
+    <color name="bubble_own_text">#FFFFFF</color>
+    <color name="bubble_other">#2D2440</color>
+    <color name="bubble_other_stroke">#3B2F55</color>
+    <color name="bubble_other_text">#EDE7F6</color>
+    <color name="chip_bg">#33284A</color>
+    <color name="chip_text">#D1C4E9</color>
+    <color name="input_bg">#2D2440</color>
+</resources>

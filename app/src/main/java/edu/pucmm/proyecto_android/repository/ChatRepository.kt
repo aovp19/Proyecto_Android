@@ -18,11 +18,15 @@ class ChatRepository (
     private val storage: FirebaseStorage = FirebaseStorage.getInstance()
 ) {
 
+    // uid del usuario con la sesion activa (vacio si no hay sesion)
+    val miUid: String
+        get() = auth.currentUser?.uid ?: ""
+
     // genera el mismo id de chat sin importar el orden de los user ids
     fun generarChatId(otroUid: String): String {
-        val miUid = auth.currentUser?.uid ?: ""
         return if (miUid < otroUid) "${miUid}_$otroUid" else "${otroUid}_$miUid"
     }
+
 
     // escucha los mensajes de un chat en tiempo real
     fun escucharMensajes(chatId: String): Flow<List<Mensaje>> = callbackFlow {

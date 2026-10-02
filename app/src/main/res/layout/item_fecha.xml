@@ -14,7 +14,7 @@
         android:fontFamily="@font/quicksand_semibold"
         android:paddingHorizontal="12dp"
         android:paddingVertical="4dp"
-        android:textColor="@color/text_dark"
+        android:textColor="@color/chip_text"
         android:textSize="12sp"
         tools:text="Hoy" />
 

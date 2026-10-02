@@ -11,7 +11,6 @@ import java.util.UUID
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import edu.pucmm.proyecto_android.model.Mensaje
 import edu.pucmm.proyecto_android.repository.ChatRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +36,7 @@ class ChatViewModel (private val otroUsuarioUid: String) : ViewModel() {
     private val _errores = MutableSharedFlow<String>()
     val errores: SharedFlow<String> = _errores.asSharedFlow()
 
-    val miUid: String = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    val miUid: String = repository.miUid
 
     private var miNombre: String? = null
 

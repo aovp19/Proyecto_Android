@@ -18,11 +18,19 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
+import edu.pucmm.proyecto_android.util.configurarBordes
+import android.view.Gravity
+import android.widget.GridLayout
+import android.widget.TextView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: ConversacionesViewModel by viewModels()
+
+    private val avatares = listOf("🦒", "🦊", "🐼", "🐯", "🐸", "🦄", "🐙", "🐧", "🦉", "🐨", "🐰", "🐻")
 
     private val pedirPermisoNotificaciones = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -33,14 +41,23 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        configurarBordes(superior = binding.header, inferior = binding.rvUsuarios)
         setSupportActionBar(binding.toolbar)
         // para que no se mande con el titulo de la app, porque hay uno custom ya
         supportActionBar?.title = ""
 
         binding.rvUsuarios.layoutManager = LinearLayoutManager(this)
 
+        binding.etBuscar.doOnTextChanged { texto, _, _, _ ->
+            viewModel.buscar(texto?.toString().orEmpty())
+        }
+
         observarEstado()
         solicitarPermisoNotificaciones()
+        viewModel.miAvatar.observe(this) { avatar ->
+            binding.tvMiAvatar.text = avatar.ifEmpty { "🙂" }
+        }
+        binding.tvMiAvatar.setOnClickListener { mostrarSelectorAvatar() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -70,6 +87,11 @@ class MainActivity : AppCompatActivity() {
                     binding.progressBar.visibility = View.GONE
 
                     if (estado.usuarios.isEmpty()) {
+                        binding.tvVacio.text = if (viewModel.hayBusqueda()) {
+                            "Sin resultados"
+                        } else {
+                            getString(R.string.no_hay_otros_usuarios_registrados)
+                        }
                         binding.tvVacio.visibility = View.VISIBLE
                         binding.rvUsuarios.visibility = View.GONE
                     } else {
@@ -79,6 +101,7 @@ class MainActivity : AppCompatActivity() {
                             val intent = Intent(this, ChatActivity::class.java)
                             intent.putExtra("otroUsuarioUid", usuario.id)
                             intent.putExtra("otroUsuarioNombre", usuario.nombre)
+                            intent.putExtra("otroUsuarioAvatar", usuario.avatar)
                             startActivity(intent)
                         }
                     }
@@ -106,5 +129,39 @@ class MainActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    private fun mostrarSelectorAvatar() {
+        val dp = resources.displayMetrics.density
+
+        val cuadricula = GridLayout(this).apply {
+            columnCount = 4
+            setPadding((16 * dp).toInt(), (8 * dp).toInt(), (16 * dp).toInt(), 0)
+        }
+
+        val dialogo = MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.elige_tu_avatar)
+            .setView(cuadricula)
+            .setNegativeButton("Cancelar", null)
+            .create()
+
+        avatares.forEach { emoji ->
+            val celda = TextView(this).apply {
+                text = emoji
+                textSize = 32f
+                gravity = Gravity.CENTER
+                layoutParams = GridLayout.LayoutParams().apply {
+                    width = (64 * dp).toInt()
+                    height = (64 * dp).toInt()
+                }
+                setOnClickListener {
+                    viewModel.elegirAvatar(emoji)
+                    dialogo.dismiss()
+                }
+            }
+            cuadricula.addView(celda)
+        }
+
+        dialogo.show()
     }
 }

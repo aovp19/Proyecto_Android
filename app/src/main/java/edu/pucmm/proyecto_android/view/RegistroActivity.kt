@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import edu.pucmm.proyecto_android.databinding.ActivityRegistroBinding
+import edu.pucmm.proyecto_android.util.configurarBordes
 import edu.pucmm.proyecto_android.viewmodel.AuthEstado
 import edu.pucmm.proyecto_android.viewmodel.AuthViewModel
 
@@ -19,6 +20,7 @@ class RegistroActivity : AppCompatActivity() {
 
         binding = ActivityRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        configurarBordes(superior = binding.header, inferior = binding.root)
 
         configurarBotones()
         observarEstado()
