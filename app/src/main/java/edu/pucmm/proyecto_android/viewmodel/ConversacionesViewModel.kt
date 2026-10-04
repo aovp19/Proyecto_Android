@@ -46,6 +46,21 @@ class ConversacionesViewModel : ViewModel() {
         }
     }
 
+    // vuelve a pedir la lista sin mostrar el círculo de carga (para cuando la pantalla vuelve a verse)
+    fun actualizarUsuarios() {
+        // si todavía esta cargando por primera vez, no hace falta pedirla otra vez
+        if (_estado.value is UsuariosEstado.Cargando) return
+
+        viewModelScope.launch {
+            usuarioRepository.obtenerUsuarios()
+                .onSuccess { lista ->
+                    todosLosUsuarios = lista
+                    publicarFiltrados()
+                }
+            // si falla no se muestra error, se queda la lista que ya había
+        }
+    }
+
     private fun registrarTokenFcm() {
         viewModelScope.launch { usuarioRepository.guardarTokenFcm() }
     }

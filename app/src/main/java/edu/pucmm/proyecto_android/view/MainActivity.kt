@@ -60,6 +60,12 @@ class MainActivity : AppCompatActivity() {
         binding.tvMiAvatar.setOnClickListener { mostrarSelectorAvatar() }
     }
 
+    override fun onStart() {
+        super.onStart()
+        // cada vez que la pantalla vuelve a verse, se refresca la lista (por si hay usuarios nuevos)
+        viewModel.actualizarUsuarios()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
