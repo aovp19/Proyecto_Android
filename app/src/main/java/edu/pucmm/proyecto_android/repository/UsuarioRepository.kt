@@ -35,32 +35,6 @@ class UsuarioRepository (
         }
     }
 
-    suspend fun enviarImagen(chatId: String, uri: Uri, nombreEmisor: String): Result<Unit> {
-        return try {
-            val miUid = auth.currentUser?.uid
-                ?: return Result.failure(Exception("No hay sesión activa"))
-
-            val ref = FirebaseStorage.getInstance().reference
-                .child("chats/$chatId/${UUID.randomUUID()}.jpg")
-
-            ref.putFile(uri).await()
-            val url = ref.downloadUrl.await().toString()
-
-            val mensaje = hashMapOf(
-                "idEmisor" to miUid,
-                "nombreEmisor" to nombreEmisor,
-                "texto" to "",
-                "imagenBase64" to url,
-                "fecha" to Timestamp.now()
-            )
-            firestore.collection("chats").document(chatId)
-                .collection("mensajes").add(mensaje).await()
-
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
 
     // guarda el token FCM de este dispositivo en el documento del usuario
     suspend fun guardarTokenFcm(token: String? = null): Result<Unit> {

@@ -75,6 +75,8 @@ class RegistroActivity : AppCompatActivity() {
 
     private fun irAlInicio() {
         val intent = Intent(this, MainActivity::class.java)
+        // NEW_TASK + CLEAR_TASK: borra tambien LoginActivity, que sigue abierta detras de esta pantalla
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }

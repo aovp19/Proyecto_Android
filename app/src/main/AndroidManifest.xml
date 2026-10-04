@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/giraffe_foreground"
+        android:icon="@mipmap/giraffe"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/giraffe_foreground"
+        android:roundIcon="@mipmap/giraffe_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_Android">
         <activity
@@ -36,14 +36,8 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.ChatActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <service
             android:name=".service.FcmService"
             android:exported="false">

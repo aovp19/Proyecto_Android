@@ -61,7 +61,10 @@ class AuthViewModel : ViewModel() {
 
         // Validar el correo y contraseña
         val validacionErr = validarCorreoYPassword(correo, password)
-        if(validacionErr != null) _estado.value = AuthEstado.Error(validacionErr)
+        if (validacionErr != null) {
+            _estado.value = AuthEstado.Error(validacionErr)
+            return
+        }
 
         //Validar que la contraseña tenga mas de 8 caracteres
         if(password.length < 8 ) {
