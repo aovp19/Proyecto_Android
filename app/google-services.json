@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "724116724238",
+    "project_id": "proyecto-android-c7afa",
+    "storage_bucket": "proyecto-android-c7afa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724116724238:android:b99ad53f05cb9aff5bfa5f",
+        "android_client_info": {
+          "package_name": "edu.pucmm.proyecto_android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmpX2499JIgqqgHIOAhMJ246ndr1drK7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

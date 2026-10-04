@@ -1,0 +1,7 @@
+C4Context
+    title Diagrama C1 - Giraffe Chat
+    Person(usuario, "Usuario", "Persona que chatea")
+    System(app, "Giraffe Chat", "App Android + Cloud Function")
+    System_Ext(firebase, "Firebase", "Backend como servicio")
+    Rel(usuario, app, "Escribe y lee mensajes")
+    Rel(app, firebase, "Autentica, guarda datos y envía notificaciones")
